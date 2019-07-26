@@ -16,6 +16,7 @@ package com.amazonaws.encryptionsdk.model;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import com.amazonaws.encryptionsdk.exception.ParseException;
 
 /**
  * This enum describes the supported types of ciphertext in this library.
@@ -68,9 +69,13 @@ public enum CiphertextType {
      * @return
      *         the CiphertextType object representing the byte value.
      */
-    public static CiphertextType deserialize(final byte value) {
+    public static CiphertextType deserialize(final byte value) throws ParseException {
         final Byte valueByte = Byte.valueOf(value);
         final CiphertextType result = ID_MAPPING.get(valueByte);
+        if (result == null) {
+            throw new ParseException("Invalid type.");
+        }
+        
         return result;
     }
 }
